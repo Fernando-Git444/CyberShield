@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Identity Guard - Protección de Datos{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12 text-center">
+        <h2 class="text-white"><i class="fa-solid fa-passport text-info"></i> IDENTITY GUARD</h2>
+        <p class="text-muted">Verifica si tus datos personales han sido expuestos en brechas de seguridad conocidas.</p>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <!-- Search Box -->
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-body">
+                <form method="POST" class="d-flex gap-2">
+                    <input type="email" name="email" class="form-control bg-dark text-light border-secondary" placeholder="Ingresa un correo electrónico (ej. nombre@empresa.com)" required value="{{ searched_email if searched_email else '' }}">
+                    <button type="submit" class="btn btn-cyber">
+                        <i class="fa-solid fa-magnifying-glass"></i> SCAN
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if breaches is not none %}
+    {% if breaches|length > 0 %}
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="alert alert-danger border-danger d-flex align-items-center" role="alert">
+                    <i class="fa-solid fa-triangle-exclamation fa-2x me-3"></i>
+                    <div>
+                        <h4 class="alert-heading fw-bold">¡ALERTA DE SEGURIDAD!</h4>
+                        <p class="mb-0">El correo <strong>{{ searched_email }}</strong> ha sido encontrado en {{ breaches|length }} brechas de datos.</p>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-column gap-3">
+                    {% for breach in breaches %}
+                    <div class="card border-danger">
+                        <div class="card-header bg-danger text-white fw-bold d-flex justify-content-between">
+                            <span>{{ breach.Name }}</span>
+                            <span>{{ breach.BreachDate }}</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">{{ breach.Description|safe }}</p>
+                            <hr class="border-secondary">
+                            <h6 class="text-danger small">DATOS COMPROMETIDOS:</h6>
+                            <div>
+                                {% for data_class in breach.DataClasses %}
+                                    <span class="badge bg-dark border border-danger text-danger mb-1">{{ data_class }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <!-- Success State handled by Flash message, maybe add visual checkmark here -->
+        <div class="text-center mt-5">
+            <i class="fa-solid fa-shield-check fa-5x text-success mb-3"></i>
+            <h3 class="text-success">Identidad Segura</h3>
+            <p class="text-muted">No se encontraron registros en la base de datos pública.</p>
+        </div>
+    {% endif %}
+{% endif %}
+{% endblock %}

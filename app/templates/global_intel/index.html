@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Global Intel - Amenazas Globales{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12 text-center">
+        <h2 class="text-white"><i class="fa-solid fa-earth-americas text-danger"></i> GLOBAL INTEL</h2>
+        <p class="text-muted">Monitorización en tiempo real de vulnerabilidades críticas reportadas por el NIST.</p>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <!-- Live Threat Feed -->
+    <div class="col-md-10">
+        <div class="card border-danger mb-4">
+            <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">🚨 ÚLTIMOS CVEs CRÍTICOS (Nivel 9.0+)</h5>
+                <span class="badge bg-dark">Fuente: NIST NVD</span>
+            </div>
+            <div class="card-body bg-dark">
+                {% if cves %}
+                    <div class="list-group list-group-flush">
+                    {% for cve in cves %}
+                        <div class="list-group-item bg-transparent text-light border-secondary">
+                            <div class="d-flex w-100 justify-content-between mb-1">
+                                <h5 class="mb-1 text-danger fw-bold">{{ cve.id }}</h5>
+                                <span class="badge bg-danger rounded-pill">CVSS {{ cve.score }}</span>
+                            </div>
+                            <p class="mb-1 text-muted small">{{ cve.description }}</p>
+                            <small class="text-secondary">Publicado: {{ cve.published }} | Vector: <span class="text-info font-monospace">{{ cve.vector }}</span></small>
+                            <div class="mt-2">
+                                <a href="https://nvd.nist.gov/vuln/detail/{{ cve.id }}" target="_blank" class="btn btn-sm btn-outline-secondary py-0">Ver Detalles Oficiales <i class="fa-solid fa-external-link-alt ms-1"></i></a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="text-center py-4">
+                        <div class="spinner-border text-danger" role="status">
+                            <span class="visually-hidden">Cargando...</span>
+                        </div>
+                        <p class="mt-2 text-muted">Obteniendo inteligencia de amenazas...</p>
+                        <small>(Si esto tarda, la API de NIST puede estar saturada)</small>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

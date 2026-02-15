@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Cyber News - Inteligencia Abierta{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12 text-center">
+        <h2 class="text-white"><i class="fa-solid fa-newspaper text-info"></i> CYBER NEWS DESK</h2>
+        <p class="text-muted">Las últimas noticias sobre brechas, parches seguridad y cibercrimen.</p>
+    </div>
+</div>
+
+<div class="row g-4">
+    {% if articles %}
+        {% for article in articles %}
+        <div class="col-md-4">
+            <div class="card h-100 border-secondary">
+                {% if article.urlToImage %}
+                    <img src="{{ article.urlToImage }}" class="card-img-top" alt="News Image" style="height: 180px; object-fit: cover; opacity: 0.8;">
+                {% else %}
+                    <div class="card-img-top bg-secondary" style="height: 180px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fa-solid fa-image fa-3x text-dark"></i>
+                    </div>
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title text-info small">{{ article.source.name }}</h5>
+                    <h6 class="card-subtitle mb-2 text-white fw-bold">{{ article.title }}</h6>
+                    <p class="card-text small text-muted">{{ article.description[:100] }}...</p>
+                </div>
+                <div class="card-footer bg-transparent border-secondary d-flex justify-content-between align-items-center">
+                    <small class="text-secondary">{{ article.publishedAt[:10] }}</small>
+                    <a href="{{ article.url }}" target="_blank" class="btn btn-sm btn-outline-info">Leer más</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="col-12 text-center">
+            <p class="text-muted">No hay noticias disponibles en este momento.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

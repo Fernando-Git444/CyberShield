@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Registro - Nuevo Agente{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5">
+        <div class="card shadow-lg border-success">
+            <div class="card-header bg-transparent text-center border-success">
+                <i class="fa-solid fa-id-card fa-3x text-success mb-2"></i>
+                <h3 class="mb-0 text-white">NUEVO AGENTE</h3>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Correo Electrónico</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-dark border-secondary text-light"><i class="fa-solid fa-envelope"></i></span>
+                            <input type="email" class="form-control bg-dark text-light border-secondary" id="email" name="email" required placeholder="tu@email.com">
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="password" class="form-label">Establecer Contraseña</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-dark border-secondary text-light"><i class="fa-solid fa-lock"></i></span>
+                            <input type="password" class="form-control bg-dark text-light border-secondary" id="password" name="password" required minlength="6">
+                        </div>
+                        <div class="form-text text-muted">Mínimo 6 caracteres. Recomendamos usar caracteres especiales.</div>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-outline-success fw-bold">CREAR CUENTA</button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer text-center border-success">
+                <small class="text-muted">¿Ya tienes cuenta? <a href="{{ url_for('auth.login') }}" class="text-decoration-none text-success">Acceder</a></small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

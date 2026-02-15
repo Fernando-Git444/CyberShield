@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Safe Scanner - Análisis de URLs{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12 text-center">
+        <h2 class="text-white"><i class="fa-solid fa-virus-slash text-success"></i> SAFE SCANNER</h2>
+        <p class="text-muted">Motor antivirus en la nube. Analiza enlaces sospechosos con +70 motores.</p>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card mb-4 bg-dark border-secondary">
+            <div class="card-body">
+                <form method="POST">
+                    <label class="form-label text-light">Objetivo a Escanear</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-secondary border-secondary text-dark"><i class="fa-solid fa-link"></i></span>
+                        <input type="url" name="url" class="form-control bg-dark text-light border-secondary" placeholder="https://sitio-sospechoso.com" required value="{{ target_url if target_url else '' }}">
+                        <button type="submit" class="btn btn-primary fw-bold">
+                            <i class="fa-solid fa-radiation"></i> ANALIZAR
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if scan_result %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card text-center border-{{ 'danger' if scan_result.malicious > 0 else 'success' }}">
+            <div class="card-header border-bottom border-secondary">
+                RESULTADOS DEL ANÁLISIS
+            </div>
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-4">
+                        <div class="display-1 fw-bold {{ 'text-danger' if scan_result.malicious > 0 else 'text-success' }}">
+                            {{ scan_result.malicious }}
+                        </div>
+                        <div class="text-uppercase small fw-bold text-muted">Detecciones</div>
+                    </div>
+                    <div class="col-md-8 text-start">
+                        <h4 class="mb-3">
+                            {% if scan_result.malicious > 0 %}
+                                <span class="text-danger"><i class="fa-solid fa-triangle-exclamation"></i> PELIGROSO</span>
+                            {% else %}
+                                <span class="text-success"><i class="fa-solid fa-check-circle"></i> LIMPIO</span>
+                            {% endif %}
+                        </h4>
+                        <ul class="list-unstyled">
+                            <li><i class="fa-solid fa-shield-virus text-success"></i> Motores que lo marcan seguro: <strong>{{ scan_result.harmless }}</strong></li>
+                            <li><i class="fa-solid fa-question text-warning"></i> Motores sospechosos: <strong>{{ scan_result.suspicious }}</strong></li>
+                            <li><i class="fa-solid fa-server text-info"></i> Total motores: <strong>{{ scan_result.total }}</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer text-muted small">
+                Powered by VirusTotal API
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

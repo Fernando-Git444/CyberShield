@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Acceso Seguro{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5">
+        <div class="card shadow-lg border-primary">
+            <div class="card-header bg-transparent text-center border-primary">
+                <i class="fa-solid fa-user-shield fa-3x text-primary mb-2"></i>
+                <h3 class="mb-0 text-white">LOGIN SEGURO</h3>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Identificador (Email)</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-dark border-secondary text-light"><i class="fa-solid fa-envelope"></i></span>
+                            <input type="email" class="form-control bg-dark text-light border-secondary" id="email" name="email" required placeholder="usuario@cybershield.net">
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="password" class="form-label">Clave de Acceso</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-dark border-secondary text-light"><i class="fa-solid fa-key"></i></span>
+                            <input type="password" class="form-control bg-dark text-light border-secondary" id="password" name="password" required>
+                        </div>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-cyber">INICIAR SESIÓN</button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer text-center border-primary">
+                <small class="text-muted">¿No tienes credenciales? <a href="{{ url_for('auth.register') }}" class="text-decoration-none text-info">Registrar Agente</a></small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

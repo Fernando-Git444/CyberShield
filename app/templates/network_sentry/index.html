@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}Network Sentry - Análisis de Red{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12 text-center">
+        <h2 class="text-white"><i class="fa-solid fa-network-wired text-primary"></i> NETWORK SENTRY</h2>
+        <p class="text-muted">Análisis de superficie de ataque de tu conexión actual.</p>
+    </div>
+</div>
+
+<div class="row">
+    <!-- IP Info Card -->
+    <div class="col-md-6 mb-4">
+        <div class="card h-100 border-primary">
+            <div class="card-header bg-transparent border-primary d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 text-white">TU HUELLA DIGITAL</h5>
+                <span class="badge bg-primary">IP PÚBLICA: {{ user_ip }}</span>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush bg-transparent">
+                    <li class="list-group-item bg-transparent text-light border-secondary d-flex justify-content-between">
+                        <span><i class="fa-solid fa-server me-2"></i> ISP:</span>
+                        <strong class="text-info">{{ ip_data.get('isp', 'Desconocido') }}</strong>
+                    </li>
+                    <li class="list-group-item bg-transparent text-light border-secondary d-flex justify-content-between">
+                        <span><i class="fa-solid fa-location-dot me-2"></i> Ubicación:</span>
+                        <span>{{ ip_data.get('city') }}, {{ ip_data.get('country') }}</span>
+                    </li>
+                    <li class="list-group-item bg-transparent text-light border-secondary d-flex justify-content-between">
+                        <span><i class="fa-solid fa-globe me-2"></i> Zona Horaria:</span>
+                        <span>{{ ip_data.get('timezone') }}</span>
+                    </li>
+                    <li class="list-group-item bg-transparent text-light border-secondary d-flex justify-content-between">
+                        <span><i class="fa-solid fa-map-pin me-2"></i> Coordenadas:</span>
+                        <small>{{ ip_data.get('lat') }}, {{ ip_data.get('lon') }}</small>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shodan Scan Results -->
+    <div class="col-md-6 mb-4">
+        <div class="card h-100 border-warning">
+            <div class="card-header bg-transparent border-warning d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 text-white">SHODAN SCAN</h5>
+                <i class="fa-solid fa-radar text-warning"></i>
+            </div>
+            <div class="card-body">
+                {% if shodan_data %}
+                    {% if shodan_data.get('ports') %}
+                        <div class="alert alert-danger">
+                            <i class="fa-solid fa-triangle-exclamation"></i> <strong>PELIGRO:</strong> Se detectaron puertos abiertos.
+                        </div>
+                        <h6 class="text-white mt-3">Puertos Expuestos:</h6>
+                        <div class="d-flex flex-wrap gap-2">
+                            {% for port in shodan_data.get('ports') %}
+                                <span class="badge bg-danger p-2 border border-light">{{ port }}</span>
+                            {% endfor %}
+                        </div>
+                        
+                        <h6 class="text-white mt-4">Servicios Detectados:</h6>
+                        <div class="small text-muted">
+                            {% for item in shodan_data.get('data', []) %}
+                                <div class="mb-2 border-bottom border-dark pb-1">
+                                    <span class="text-warning">Port {{ item.port }}:</span> {{ item.product }} {{ item.version }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fa-solid fa-lock fa-4x text-success mb-3"></i>
+                            <h4 class="text-success">Conexión Sigilosa</h4>
+                            <p class="text-muted mb-0">No se detectaron puertos abiertos públicamente en Shodan.</p>
+                            <small class="text-secondary">(O tu IP no ha sido escaneada recientemente)</small>
+                        </div>
+                    {% endif %}
+                {% else %}
+                     <div class="text-center py-5">
+                        <i class="fa-solid fa-circle-question fa-4x text-muted mb-3"></i>
+                        <p class="text-muted">No se pudo conectar con Shodan o falta API Key.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
