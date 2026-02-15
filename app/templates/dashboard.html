@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12 text-center">
+        <h1 class="display-4 text-white mb-3">SYSTEM STATUS: <span class="text-success">ONLINE</span></h1>
+        <p class="lead text-secondary">Bienvenido al Centro de Control de Ciberseguridad Personal.</p>
+    </div>
+</div>
+
+<!-- Stats / Risk Score Overview -->
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card h-100 text-center py-4">
+            <div class="card-body">
+                <h5 class="card-title text-muted">RISK SCORE</h5>
+                <h2 class="display-3 fw-bold text-success">95/100</h2>
+                <p class="card-text small">Tu entorno parece seguro.</p>
+                <a href="{{ url_for('risk_engine.index') }}" class="btn btn-cyber btn-sm mt-2">Ver Análisis</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card h-100">
+            <div class="card-header bg-transparent border-secondary fw-bold">
+                <i class="fa-solid fa-globe"></i> AMENAZAS GLOBALES (Top 3)
+            </div>
+            <div class="card-body">
+                <div class="alert alert-dark border-danger d-flex align-items-center">
+                    <i class="fa-solid fa-bug text-danger me-3 fa-2x"></i>
+                    <div>
+                        <strong>CVE-2026-1920 (Crítico)</strong>
+                        <div class="small">Vulnerabilidad de ejecución remota en Windows TCP/IP.</div>
+                    </div>
+                </div>
+                <div class="alert alert-dark border-warning d-flex align-items-center">
+                    <i class="fa-solid fa-shield-virus text-warning me-3 fa-2x"></i>
+                    <div>
+                        <strong>Ransomware "BlackCat" Variant</strong>
+                        <div class="small">Nueva campaña de phishing detectada en LATAM.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modules Grid -->
+<h3 class="mb-3 text-white border-bottom border-secondary pb-2">Módulos de Defensa</h3>
+<div class="row g-4">
+    <!-- Module 1: Identity Guard -->
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fa-solid fa-passport fa-3x mb-3" style="color: var(--cyber-secondary);"></i>
+                <h5 class="card-title">Identity Guard</h5>
+                <p class="card-text small text-muted">Verifica si tus correos o contraseñas han sido filtrados en la Dark Web.</p>
+                <a href="{{ url_for('identity_guard.index') }}" class="btn btn-outline-light btn-sm stretched-link">Auditar Identidad</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Module 2: Network Sentry -->
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fa-solid fa-network-wired fa-3x mb-3" style="color: var(--cyber-primary);"></i>
+                <h5 class="card-title">Network Sentry</h5>
+                <p class="card-text small text-muted">Analiza tu IP pública, puertos expuestos y la seguridad de tu ISP.</p>
+                <a href="{{ url_for('network_sentry.index') }}" class="btn btn-outline-light btn-sm stretched-link">Analizar Red</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Module 3: Safe Scanner -->
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fa-solid fa-magnifying-glass-chart fa-3x mb-3" style="color: var(--cyber-danger);"></i>
+                <h5 class="card-title">Safe Scanner</h5>
+                <p class="card-text small text-muted">Escanea URLs y archivos sospechosos con mas de 70 antivirus.</p>
+                <a href="{{ url_for('safe_scanner.index') }}" class="btn btn-outline-light btn-sm stretched-link">Escanear Objetivo</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
