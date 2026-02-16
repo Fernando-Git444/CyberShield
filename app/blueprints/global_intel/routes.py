@@ -24,7 +24,8 @@ def index():
             'pubStartDate': pub_start,
             'pubEndDate': pub_end,
             'cvssV3Severity': 'CRITICAL',
-            'resultsPerPage': 5
+            'resultsPerPage': 20
+
         }
         
         # NVD requires an API key for higher rate limits, but works without one slowly.

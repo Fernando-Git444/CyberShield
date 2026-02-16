@@ -1,7 +1,8 @@
 from flask import render_template, redirect, url_for, flash, request, session
 from . import auth_bp
 from app.utils.supabase_client import get_supabase_client
-import gotrue.errors
+# import gotrue.errors (Removed: Using custom REST client)
+
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():

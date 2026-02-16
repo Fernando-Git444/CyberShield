@@ -10,7 +10,7 @@ class Config:
     
     # Pillar API Keys
     HIBP_API_KEY = os.environ.get('HIBP_API_KEY')
-    SHODAN_API_KEY = os.environ.get('SHODAN_API_KEY')
+    VIEWDNS_API_KEY = os.environ.get('VIEWDNS_API_KEY')
     VIRUSTOTAL_API_KEY = os.environ.get('VIRUSTOTAL_API_KEY')
     GOOGLE_SAFE_BROWSING_KEY = os.environ.get('GOOGLE_SAFE_BROWSING_KEY')
     ALIENVAULT_API_KEY = os.environ.get('ALIENVAULT_API_KEY')

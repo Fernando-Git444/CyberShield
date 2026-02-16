@@ -41,48 +41,53 @@
         </div>
     </div>
 
-    <!-- Shodan Scan Results -->
+    <!-- Scan Results (ViewDNS) -->
     <div class="col-md-6 mb-4">
         <div class="card h-100 border-warning">
             <div class="card-header bg-transparent border-warning d-flex justify-content-between align-items-center">
-                <h5 class="mb-0 text-white">SHODAN SCAN</h5>
+                <h5 class="mb-0 text-white">ACTIVE PORT SCAN (VIEWDNS)</h5>
                 <i class="fa-solid fa-radar text-warning"></i>
             </div>
             <div class="card-body">
-                {% if shodan_data %}
-                    {% if shodan_data.get('ports') %}
-                        <div class="alert alert-danger">
-                            <i class="fa-solid fa-triangle-exclamation"></i> <strong>PELIGRO:</strong> Se detectaron puertos abiertos.
+                {% if scan_data and scan_data.ports %}
+                    <div class="alert alert-danger">
+                        <i class="fa-solid fa-triangle-exclamation"></i> <strong>PELIGRO:</strong> Se detectaron {{ scan_data.ports|length }} puertos abiertos.
+                    </div>
+                    
+                    <h6 class="text-white mt-3">Puertos Expuestos:</h6>
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                        {% for port in scan_data.ports %}
+                            <span class="badge bg-danger p-2 border border-light">{{ port }}</span>
+                        {% endfor %}
+                    </div>
+                    
+                    <h6 class="text-white">Reporte Técnico (Raw):</h6>
+                    <div class="bg-black p-2 rounded border border-secondary font-monospace text-success small" style="max-height: 200px; overflow-y: auto;">
+                        <pre class="mb-0">{{ scan_data.raw_report }}</pre>
+                    </div>
+
+                {% elif scan_data and not scan_data.ports and scan_data.raw_report %}
+                    <div class="text-center py-4">
+                        <i class="fa-solid fa-lock fa-4x text-success mb-3"></i>
+                        <h4 class="text-success">Red Segura</h4>
+                        <p class="text-muted mb-3">El escáner de puertos no detectó servicios públicos (Todo cerrado).</p>
+                        <div class="bg-black p-2 rounded border border-secondary font-monospace text-success small text-start">
+                            <pre class="mb-0">{{ scan_data.raw_report }}</pre>
                         </div>
-                        <h6 class="text-white mt-3">Puertos Expuestos:</h6>
-                        <div class="d-flex flex-wrap gap-2">
-                            {% for port in shodan_data.get('ports') %}
-                                <span class="badge bg-danger p-2 border border-light">{{ port }}</span>
-                            {% endfor %}
-                        </div>
-                        
-                        <h6 class="text-white mt-4">Servicios Detectados:</h6>
-                        <div class="small text-muted">
-                            {% for item in shodan_data.get('data', []) %}
-                                <div class="mb-2 border-bottom border-dark pb-1">
-                                    <span class="text-warning">Port {{ item.port }}:</span> {{ item.product }} {{ item.version }}
-                                </div>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        <div class="text-center py-5">
-                            <i class="fa-solid fa-lock fa-4x text-success mb-3"></i>
-                            <h4 class="text-success">Conexión Sigilosa</h4>
-                            <p class="text-muted mb-0">No se detectaron puertos abiertos públicamente en Shodan.</p>
-                            <small class="text-secondary">(O tu IP no ha sido escaneada recientemente)</small>
-                        </div>
-                    {% endif %}
+                    </div>
+
                 {% else %}
                      <div class="text-center py-5">
-                        <i class="fa-solid fa-circle-question fa-4x text-muted mb-3"></i>
-                        <p class="text-muted">No se pudo conectar con Shodan o falta API Key.</p>
+                        <i class="fa-solid fa-circle-notch fa-spin fa-3x text-muted mb-3"></i>
+                        <p class="text-muted">Esperando escaneo...</p>
+                        {% if scan_error %}
+                            <p class="text-danger fw-bold">{{ scan_error }}</p>
+                        {% endif %}
                     </div>
                 {% endif %}
+            </div>
+            <div class="card-footer bg-transparent border-warning text-end">
+                <small class="text-muted">Powered by ViewDNS.info</small>
             </div>
         </div>
     </div>
