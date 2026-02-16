@@ -16,8 +16,8 @@ def index():
              flash("Error: VIRUSTOTAL_API_KEY no configurada.", "danger")
         else:
             try:
-                # VirusTotal V3 API - URL Scanner
-                # 1. Submit URL for scanning
+                # API v3 de VirusTotal - Escáner de URLs
+                # 1. Codificar la URL en base64 para generar el identificador
                 url_id = base64.urlsafe_b64encode(target_url.encode()).decode().strip("=")
                 
                 headers = {
@@ -26,7 +26,7 @@ def index():
                     "content-type": "application/x-www-form-urlencoded"
                 }
 
-                # Try to get existing report first to be fast
+                # Intentar obtener un reporte existente primero para mayor velocidad
                 report_url = f"https://www.virustotal.com/api/v3/urls/{url_id}"
                 response = requests.get(report_url, headers=headers)
                 
@@ -42,7 +42,7 @@ def index():
                         'last_analysis_date': attributes.get('last_analysis_date', 0)
                     }
                 elif response.status_code == 404:
-                    # If not found, we should submit it (skipping for this demo to avoid async complexity)
+                    # Si no se encontró, se debería enviar a analizar (omitido para evitar complejidad asíncrona en la demo)
                     flash("URL no analizada previamente. Por favor envíala a VirusTotal manualmente para el primer análisis.", "info")
                 else:
                     flash(f"Error VirusTotal: {response.status_code}", "warning")

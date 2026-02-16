@@ -10,7 +10,7 @@ def index():
     
     if not api_key:
         flash("Configura NEWS_API_KEY para ver noticias reales.", "warning")
-        # Mock data for demo
+        # Datos de ejemplo para demostración
         articles = [
             {
                 'title': 'Massive Ransomware Attack Hits Global Logistics',
@@ -23,11 +23,12 @@ def index():
         ]
     else:
         try:
+            # Consulta a NewsAPI: noticias recientes sobre ciberseguridad, malware y ransomware
             url = f"https://newsapi.org/v2/everything?q=cybersecurity OR malware OR ransomware&language=en&sortBy=publishedAt&apiKey={api_key}"
             response = requests.get(url)
             if response.status_code == 200:
                 data = response.json()
-                articles = data.get('articles', [])[:9] # Top 9 articles
+                articles = data.get('articles', [])[:9] # Mostrar solo las 9 noticias más recientes
             else:
                 flash(f"Error cargando noticias: {response.status_code}", "danger")
         except Exception as e:

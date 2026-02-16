@@ -9,13 +9,13 @@ def index():
 
     if request.method == 'POST':
         searched_email = request.form.get('email')
-        # HIBP requires an API key for full breach service now, or use the free v3 endpoint with caveats
-        # We will assume user has a key or use a mock if key is missing for demo purposes
+        # HIBP requiere una clave API de pago para el servicio completo de brechas.
+        # Si no se proporciona clave, se usa el modo simulación para la demostración.
         api_key = current_app.config['HIBP_API_KEY']
         
         if not api_key or api_key == "optional-if-paying":
              flash("Advertencia: No se detectó API Key de HIBP. Usando modo simulación para demostración.", "warning")
-             # Mock data for demonstration purposes if no key
+             # Datos simulados para demostración (sin clave API)
              breaches = [
                  {'Name': 'LinkedIn', 'BreachDate': '2021-06-21', 'Description': 'Scraped data from 700M users.', 'DataClasses': ['Email addresses', 'Phone numbers', 'Geographic location', 'Job titles']},
                  {'Name': 'Adobe', 'BreachDate': '2013-10-04', 'Description': '153 million accounts breached.', 'DataClasses': ['Email addresses', 'Password hints', 'Passwords', 'Usernames']}
@@ -25,7 +25,7 @@ def index():
                 'hibp-api-key': api_key,
                 'user-agent': 'CyberShield-Hub'
             }
-            # The API endpoint for getting breaches for an account
+            # Endpoint de la API para obtener brechas asociadas a una cuenta
             url = f"https://haveibeenpwned.com/api/v3/breachedaccount/{searched_email}?truncateResponse=false"
             
             try:

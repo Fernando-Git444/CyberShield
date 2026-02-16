@@ -7,29 +7,29 @@ from datetime import datetime, timedelta
 def index():
     cves = []
     
-    # 1. Fetch Recent Critical CVEs from NVD (National Vulnerability Database)
-    # NIST NVD API v2
+    # 1. Obtener CVEs Críticos Recientes del NVD (Base de Datos Nacional de Vulnerabilidades)
+    # API v2 del NIST NVD
     try:
-        # Get CVEs from the last 30 days
+        # Obtener CVEs de los últimos 30 días
         end_date = datetime.now()
         start_date = end_date - timedelta(days=30)
         
-        # Format dates as ISO 8601
+        # Formatear fechas en ISO 8601
         pub_start = start_date.strftime('%Y-%m-%dT%H:%M:%S.000')
         pub_end = end_date.strftime('%Y-%m-%dT%H:%M:%S.000')
         
-        # Request Critical vulnerabilities (cvssV3Severity=CRITICAL)
+        # Solicitar vulnerabilidades con severidad CRÍTICA (cvssV3Severity=CRITICAL)
         nvd_url = "https://services.nvd.nist.gov/rest/json/cves/2.0"
         params = {
             'pubStartDate': pub_start,
             'pubEndDate': pub_end,
             'cvssV3Severity': 'CRITICAL',
-            'resultsPerPage': 5
+            'resultsPerPage': 20
+
         }
         
-        # NVD requires an API key for higher rate limits, but works without one slowly.
-        # Ideally add apiKey headers if available in config.
-        # headers = {'apiKey': current_app.config['NVD_API_KEY']}
+        # NVD requiere una clave API para mayores límites de consultas,
+        # pero funciona sin clave a menor velocidad.
         
         response = requests.get(nvd_url, params=params, timeout=10)
         if response.status_code == 200:
@@ -37,9 +37,9 @@ def index():
             vulnerabilities = data.get('vulnerabilities', [])
             for item in vulnerabilities:
                 cve = item.get('cve', {})
-                # Extract relevant fields
+                # Extraer campos relevantes de cada CVE
                 cve_id = cve.get('id')
-                description = cve.get('descriptions', [{}])[0].get('value', 'No description')
+                description = cve.get('descriptions', [{}])[0].get('value', 'Sin descripción')
                 metrics = cve.get('metrics', {}).get('cvssMetricV31', [{}])[0].get('cvssData', {})
                 score = metrics.get('baseScore', 'N/A')
                 vector = metrics.get('vectorString', 'N/A')
@@ -52,7 +52,7 @@ def index():
                     'published': cve.get('published', '')[:10]
                 })
         else:
-             flash(f"NVD API Warning: Status {response.status_code}", "warning")
+             flash(f"Advertencia NVD API: Estado {response.status_code}", "warning")
 
     except Exception as e:
         flash(f"Error conectando con NVD: {str(e)}", "danger")

@@ -2,10 +2,11 @@ from flask import Flask
 from config import Config
 
 def create_app(config_class=Config):
+    """Fábrica de la aplicación Flask. Crea y configura la instancia principal."""
     app = Flask(__name__)
     app.config.from_object(config_class)
 
-    # Register Blueprints
+    # Registro de Blueprints (módulos)
     from app.blueprints.auth import auth_bp
     app.register_blueprint(auth_bp)
 
@@ -29,6 +30,7 @@ def create_app(config_class=Config):
 
     @app.route('/')
     def index():
+        """Ruta principal: muestra el dashboard central."""
         from flask import render_template
         return render_template('dashboard.html')
 

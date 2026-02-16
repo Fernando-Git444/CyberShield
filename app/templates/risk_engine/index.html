@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Risk Engine - Análisis de Riesgo{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12 text-center">
+        <h2 class="text-white"><i class="fa-solid fa-chart-line text-warning"></i> RISK SCORING ENGINE</h2>
+        <p class="text-muted">Evaluación integral del nivel de seguridad basada en amenazas activas y entorno.</p>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card bg-dark border-warning mb-4">
+            <div class="card-header bg-warning text-dark fw-bold">
+                <i class="fa-solid fa-calculator"></i> CALCULADORA DE RIESGO
+            </div>
+            <div class="card-body text-center">
+                <h1 class="display-1 fw-bold text-{{ color }} mb-0">{{ score }}</h1>
+                <h4 class="text-{{ color }} text-uppercase mb-3">NIVEL DE RIESGO: {{ risk_level }}</h4>
+                <hr class="border-secondary">
+                
+                <h5 class="text-start text-white mb-3">Hallazgos del Sistema:</h5>
+                <ul class="list-group list-group-flush text-start">
+                    {% for item in findings %}
+                    <li class="list-group-item bg-transparent text-light border-secondary">
+                        {% if item.severity == 'high' %}
+                            <i class="fa-solid fa-triangle-exclamation text-danger me-2"></i>
+                        {% else %}
+                            <i class="fa-solid fa-check-circle text-success me-2"></i>
+                        {% endif %}
+                        {{ item.text }}
+                    </li>
+                    {% endfor %}
+                </ul>
+
+                <button class="btn btn-outline-{{ color }} w-100 mt-4" onclick="window.location.reload();">
+                    <i class="fa-solid fa-arrows-rotate"></i> Re-Calcular Riesgo
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

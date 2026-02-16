@@ -1,7 +1,7 @@
 from flask import render_template, redirect, url_for, flash, request, session
 from . import auth_bp
 from app.utils.supabase_client import get_supabase_client
-import gotrue.errors
+
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
@@ -11,7 +11,7 @@ def login():
         supabase = get_supabase_client()
         
         try:
-            # Supabase Auth Login
+            # Inicio de sesión con Supabase Auth
             response = supabase.auth.sign_in_with_password({"email": email, "password": password})
             session['user'] = response.user.id
             session['email'] = response.user.email
@@ -30,7 +30,7 @@ def register():
         supabase = get_supabase_client()
         
         try:
-            # Supabase Auth Register
+            # Registro de nuevo usuario con Supabase Auth
             response = supabase.auth.sign_up({"email": email, "password": password})
             flash('Cuenta creada. Por favor verifica tu correo o inicia sesión.', 'success')
             return redirect(url_for('auth.login'))
