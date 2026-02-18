@@ -68,6 +68,17 @@ CyberShield/
 - Conexión a Internet (para las consultas a las APIs)
 
 ---
+## Evidencia de funcionamiento
+### Pantalla principal de la app
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/a9715999-2882-4578-8371-01da58a51a71" />
+
+### Pantalla de la app consumiendo una de las APIs
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/00c15832-9b25-4860-b1e4-06a652d92465" />
+
+### Pantalla de diseño responsivo
+<img width="502" height="798" alt="image" src="https://github.com/user-attachments/assets/7f2b16af-2cc4-4f75-abf1-24c0d124821b" />
+
+---
 
 ## 🚀 Instalación y Ejecución
 
