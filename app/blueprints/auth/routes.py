@@ -3,6 +3,8 @@ from . import auth_bp
 from app.utils.supabase_client import get_supabase_client
 
 
+
+
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':

@@ -1,7 +1,6 @@
 from flask import render_template, request, current_app, flash
 from . import network_sentry_bp
 import requests
-import socket
 
 @network_sentry_bp.route('/network-sentry')
 def index():
